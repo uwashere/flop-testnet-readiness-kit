@@ -1,0 +1,6 @@
+*.pem
+*.key
+*passphrase*
+identity*.json
+contribution-proof.json
+__pycache__/
