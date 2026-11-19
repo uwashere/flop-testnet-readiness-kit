@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 import urllib.error
 import urllib.request
 
@@ -32,11 +33,22 @@ def get_json(url: str, data: bytes | None = None, timeout: float = 20.0):
     request = urllib.request.Request(
         url,
         data=data,
-        headers={"Content-Type": "application/json", "Accept": "application/json"},
+        headers={
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "User-Agent": "flop-readiness-kit/1.0 (+https://technocore.chat)",
+        },
         method="POST" if data else "GET",
     )
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        return json.loads(response.read().decode("utf-8"))
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as error:
+            if error.code not in {403, 429, 502, 503, 504} or attempt == 2:
+                raise
+            time.sleep(2 * (attempt + 1))
+    raise RuntimeError("unreachable")
 
 
 def rpc(url: str, method: str):

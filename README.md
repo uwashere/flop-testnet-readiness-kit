@@ -45,6 +45,8 @@ gateway model count, and warns if the RPC/faucet genesis hashes disagree.
 - `x-posts.md` — draft posts for public evidence trail
 - `LICENSE` — MIT
 
+Current revision: `git rev-parse HEAD` (use the full hash in the signed proof).
+
 ## Caveat
 
 Nothing here guarantees an allocation. Eligibility and rewards remain subject to
