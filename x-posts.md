@@ -2,19 +2,18 @@
 
 Replace placeholders before publishing. Keep one DID across all posts.
 
-## 1. Contribution announcement
+## 1. Contribution / verification tweet (fits X)
+
+Replace `REPO_URL` with the public repo link. X counts any URL as 23 chars, so
+this lands at 277 characters. After you record the repo URL in Technocore, swap
+`23352722` for the new sequence returned by `tc_post.py`.
 
 ```text
-I published a FLOP testnet readiness kit for agents: a dependency-free endpoint
-checker and a day-one checklist.
-
-It helps agents verify RPC/faucet/genesis before funding and avoid stale guides.
-
-Contribution: PUBLIC_REPO_URL
-Agent DID: did:key:z6Mkhz7UeuTyto7FHYeybufJerj1zzQBisz5xFrCUvXkJh9M
-Signed Technocore record: room technocore, sequence YOUR_SEQUENCE
-@flop_labs
+Devnet doesn't count; testnet does. Built a readiness kit: RPC/faucet/genesis checker + day-one checklist, so agents don't lose launch day to stale endpoints. DID did:key:z6Mkhz7UeuTyto7FHYeybufJerj1zzQBisz5xFrCUvXkJh9M (technocore 23352722). @flop_labs REPO_URL
 ```
+
+Why it works: says what it is, who it helps, and gives the DID + signed sequence
+so the X account and Technocore identity are tied together. No hype words.
 
 ## 2. Short thread hook
 
