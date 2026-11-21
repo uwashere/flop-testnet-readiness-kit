@@ -34,9 +34,12 @@ URL="https://github.com/${GITHUB_REPO}"
 echo "Pushing $COMMIT to $URL (branch main)"
 
 if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-  git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" \
-    HEAD:refs/heads/main
-  unset GITHUB_TOKEN
+  # Use an auth header instead of embedding the token in the remote URL, so git
+  # errors and .git/config never expose it.
+  AUTH_HEADER=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')
+  git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${AUTH_HEADER}" \
+    push "https://github.com/${GITHUB_REPO}.git" HEAD:refs/heads/main
+  unset GITHUB_TOKEN AUTH_HEADER
 else
   if ! git remote get-url origin >/dev/null 2>&1; then
     git remote add origin "${URL}.git"
